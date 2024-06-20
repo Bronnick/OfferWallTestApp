@@ -1,5 +1,6 @@
 package com.example.offerwalltestapp
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Gravity
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         container = findViewById(R.id.frameLayout)
         buttonNext = findViewById(R.id.buttonNext)
+        buttonNext?.setBackgroundColor(Color.GRAY)
 
         val viewModel : AppViewModel by viewModels {AppViewModel.Factory}
         viewModel.currentData.observe(this) { data ->
@@ -59,14 +61,13 @@ class MainActivity : AppCompatActivity() {
                 view.textAlignment = View.TEXT_ALIGNMENT_CENTER
             } else if(data.type == "webview") {
                 view = WebView(this)
+                view.settings.javaScriptEnabled = true
                 view.settings.domStorageEnabled = true
                 view.webViewClient = object : WebViewClient() {
                     override fun shouldOverrideUrlLoading(
                         view: WebView?,
                         request: WebResourceRequest?
                     ): Boolean {
-                        /*view?.loadUrl(data.url ?: "")
-                        return true*/
                         return false
                     }
                 }
@@ -85,6 +86,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.currentIndex.value = (viewModel.currentIndex.value!! + 1) % viewModel.idArray.size
             viewModel.currentId.value = viewModel.idArray[viewModel.currentIndex.value!!]
             viewModel.getObject(viewModel.currentId.value!!)
+        }
+
+        viewModel.buttonNextEnabled.observe(this) { isEnabled ->
+            buttonNext?.isEnabled = isEnabled
         }
 
     }

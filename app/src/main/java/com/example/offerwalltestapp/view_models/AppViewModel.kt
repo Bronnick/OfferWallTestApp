@@ -24,6 +24,8 @@ class AppViewModel(
     var currentId = MutableLiveData(0)
     var currentIndex = MutableLiveData(0)
 
+    var buttonNextEnabled = MutableLiveData(false)
+
     init {
         initApp()
     }
@@ -36,7 +38,6 @@ class AppViewModel(
             job.join()
             getObject(idArray[0])
         }
-
     }
 
     suspend fun getAllIds() {
@@ -51,9 +52,11 @@ class AppViewModel(
     }
 
     fun getObject(id: Int) {
+        buttonNextEnabled.value = false
         viewModelScope.launch {
             currentData.value = appRepository.getObject(id)
             Log.d("myLogs", currentData.value.toString())
+            buttonNextEnabled.value = true
         }
     }
 
