@@ -12,8 +12,6 @@ import com.example.offerwalltestapp.repositories.AppRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 class AppViewModel(
     private val appRepository: AppRepository
@@ -23,21 +21,33 @@ class AppViewModel(
 
     var currentData: MutableLiveData<AppClass> = MutableLiveData()
 
+    var currentId = MutableLiveData(0)
+    var currentIndex = MutableLiveData(0)
+
     init {
-        getAllIds()
+        initApp()
     }
 
-    fun getAllIds() {
+    fun initApp() {
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                val idList = appRepository.getAllIds()
-                for (id in idList) {
-                    idArray.add(id)
-                    Log.d("myLogs", "$id")
-                }
+            val job = viewModelScope.launch {
+                getAllIds()
             }
+            job.join()
             getObject(idArray[0])
         }
+
+    }
+
+    suspend fun getAllIds() {
+        withContext(Dispatchers.IO) {
+            val idList = appRepository.getAllIds()
+            for (id in idList) {
+                idArray.add(id)
+                Log.d("myLogs", "$id")
+            }
+        }
+        currentId.value = idArray[0]
     }
 
     fun getObject(id: Int) {
