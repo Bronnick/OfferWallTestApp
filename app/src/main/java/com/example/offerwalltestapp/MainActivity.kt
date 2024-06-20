@@ -75,21 +75,28 @@ class MainActivity : AppCompatActivity() {
             } else if(data.type == "image") {
                 view = ImageView(this)
                 Picasso.with(this).load(data.url).into(view)
-            } else return@observe
+            } else {
+                goToNextElement(viewModel)
+                return@observe
+            }
 
             view.layoutParams = layoutParams
             container?.addView(view)
         }
 
         buttonNext?.setOnClickListener {
-            viewModel.currentIndex.value = (viewModel.currentIndex.value!! + 1) % viewModel.idArray.size
-            viewModel.currentId.value = viewModel.idArray[viewModel.currentIndex.value!!]
-            viewModel.getObject(viewModel.currentId.value!!)
+            goToNextElement(viewModel)
         }
 
         viewModel.buttonNextEnabled.observe(this) { isEnabled ->
             buttonNext?.isEnabled = isEnabled
         }
 
+    }
+
+    private fun goToNextElement(viewModel: AppViewModel) {
+        viewModel.currentIndex.value = (viewModel.currentIndex.value!! + 1) % viewModel.idArray.size
+        viewModel.currentId.value = viewModel.idArray[viewModel.currentIndex.value!!]
+        viewModel.getObject(viewModel.currentId.value!!)
     }
 }
