@@ -2,7 +2,6 @@ package com.example.offerwalltestapp.network
 
 import com.example.offerwalltestapp.network.classes.AppClass
 import com.example.offerwalltestapp.network.classes.DataArray
-import com.example.offerwalltestapp.network.classes.Id
 import retrofit2.http.GET
 import retrofit2.http.Path
 

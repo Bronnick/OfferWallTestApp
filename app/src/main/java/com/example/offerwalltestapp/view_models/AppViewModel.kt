@@ -30,7 +30,7 @@ class AppViewModel(
         initApp()
     }
 
-    fun initApp() {
+    private fun initApp() {
         viewModelScope.launch {
             val job = viewModelScope.launch {
                 getAllIds()
@@ -40,7 +40,7 @@ class AppViewModel(
         }
     }
 
-    suspend fun getAllIds() {
+    private suspend fun getAllIds() {
         withContext(Dispatchers.IO) {
             val idList = appRepository.getAllIds()
             for (id in idList) {
