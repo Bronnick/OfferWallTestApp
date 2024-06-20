@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
     private var container: FrameLayout? = null
     private var buttonNext: Button? = null
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

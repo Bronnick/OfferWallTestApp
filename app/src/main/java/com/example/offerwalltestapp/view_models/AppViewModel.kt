@@ -45,7 +45,6 @@ class AppViewModel(
             val idList = appRepository.getAllIds()
             for (id in idList) {
                 idArray.add(id)
-                Log.d("myLogs", "$id")
             }
         }
         currentId.value = idArray[0]
@@ -55,7 +54,6 @@ class AppViewModel(
         buttonNextEnabled.value = false
         viewModelScope.launch {
             currentData.value = appRepository.getObject(id)
-            Log.d("myLogs", currentData.value.toString())
             buttonNextEnabled.value = true
         }
     }
